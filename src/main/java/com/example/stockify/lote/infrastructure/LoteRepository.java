@@ -7,5 +7,4 @@ import java.util.Optional;
 
 public interface LoteRepository extends JpaRepository<Lote, Long> {
     List<Lote> findByProductoIdOrderByFechaCompraAsc(Long productoId);
-    Optional<Lote> findTopByProductoIdAndCantidadDisponibleGreaterThanOrderByFechaCompraAsc(Long productoId, double cantidad);
 }

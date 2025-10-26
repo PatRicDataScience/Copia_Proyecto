@@ -29,6 +29,7 @@ public class AlmacenController {
         return ResponseEntity.ok(almacenService.findAll());
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<AlmacenRequestDTO> obtenerPorId(@PathVariable Long id) {
         return ResponseEntity.ok(almacenService.findById(id));

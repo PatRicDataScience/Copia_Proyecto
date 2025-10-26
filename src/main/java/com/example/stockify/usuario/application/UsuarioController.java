@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
     private final UsuarioServiceCRUD usuarioService;
@@ -35,8 +36,19 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioRequestDTO> actualizar(@PathVariable Long id, @RequestBody UsuarioNewDTO dto) {
-        return ResponseEntity.ok(usuarioService.update(id, dto));
+    public ResponseEntity<UsuarioRequestDTO> actualizarUsuarioCompleto(
+            @PathVariable Long id,
+            @Valid @RequestBody UsuarioNewDTO dto) {
+        UsuarioRequestDTO updated = usuarioService.updateFull(id, dto);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UsuarioRequestDTO> actualizarUsuarioParcial(
+            @PathVariable Long id,
+            @RequestBody UsuarioNewDTO dto) {
+        UsuarioRequestDTO updated = usuarioService.updatePartial(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")

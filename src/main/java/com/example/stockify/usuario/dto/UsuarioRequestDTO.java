@@ -34,16 +34,13 @@ public class UsuarioRequestDTO {
     @Pattern(regexp = "\\d{9}", message = "El teléfono debe tener exactamente 9 dígitos")
     private String telefono;
 
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
-    private String password;
-
     private Rol rol;
 
     @NotBlank(message = "La sede es obligatoria")
     @Size(max = 50)
     private String sede;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // ⏰ formato legible sin zona
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime fechaRegistro;
 
     private Boolean activo;

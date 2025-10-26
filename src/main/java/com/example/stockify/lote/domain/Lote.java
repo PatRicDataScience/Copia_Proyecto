@@ -6,6 +6,7 @@ import com.example.stockify.producto.domain.Producto;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Lote {
     private String codigoLote;
 
     @Column(name = "fecha_compra")
-    private ZonedDateTime fechaCompra = ZonedDateTime.now();
+    private LocalDateTime fechaCompra = LocalDateTime.now();
 
     @Column(name = "costo_unitario")
     private Double costoUnitario;
@@ -40,7 +41,7 @@ public class Lote {
 
     @ManyToOne
     @JoinColumn(name = "producto_id")
-    private Producto producto; // n:1
+    private Producto producto;
 
     @ManyToOne
     @JoinColumn(name = "almacen_id")
