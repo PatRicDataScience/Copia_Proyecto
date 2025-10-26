@@ -8,9 +8,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -58,5 +56,16 @@ public class Producto {
 
     @Column(name = "ultimo_actualizado")
     private LocalDateTime ultimoActualizado = LocalDateTime.now();
+
+    @PrePersist
+    public void prePersist() {
+        fechaCreacion = LocalDateTime.now();
+        ultimoActualizado = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        ultimoActualizado = LocalDateTime.now();
+    }
 }
 

@@ -32,11 +32,11 @@ public class ProductoNewDTO {
 
     @NotNull(message = "El stock mínimo es obligatorio")
     @PositiveOrZero(message = "El stock mínimo no puede ser negativo")
-    private Integer stockMinimo;
+    private Double stockMinimo;
 
     @NotNull(message = "El stock actual es obligatorio")
     @PositiveOrZero(message = "El stock actual no puede ser negativo")
-    private Integer stockActual;
+    private Double stockActual;
 
     @NotNull(message = "El estado activo es obligatorio")
     private Boolean activo;

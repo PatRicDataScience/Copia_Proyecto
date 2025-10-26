@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/almacenes")
 @CrossOrigin(origins = "*")
@@ -23,21 +24,39 @@ public class AlmacenController {
     public ResponseEntity<AlmacenRequestDTO> crear(@RequestBody AlmacenNewDTO dto) {
         return ResponseEntity.ok(almacenService.create(dto));
     }
-
     @GetMapping
-    public ResponseEntity<List<AlmacenRequestDTO>> listar() {
+    public ResponseEntity<?> listarTodos() {
         return ResponseEntity.ok(almacenService.findAll());
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<AlmacenRequestDTO> obtenerPorId(@PathVariable Long id) {
         return ResponseEntity.ok(almacenService.findById(id));
     }
+    @GetMapping("/activos")
+    public ResponseEntity<List<AlmacenRequestDTO>> listarActivos() {
+        return ResponseEntity.ok(almacenService.listarActivos());
+    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AlmacenRequestDTO> actualizar(@PathVariable Long id, @RequestBody AlmacenNewDTO dto) {
-        return ResponseEntity.ok(almacenService.update(id, dto));
+    @GetMapping("/buscar")
+    public ResponseEntity<List<AlmacenRequestDTO>> buscarPorNombre(@RequestParam String nombre) {
+        return ResponseEntity.ok(almacenService.buscarPorNombre(nombre));
+    }
+
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<AlmacenRequestDTO> actualizarEstado(
+            @PathVariable Long id,
+            @RequestParam Boolean activo) {
+        AlmacenRequestDTO updated = almacenService.actualizarEstado(id, activo);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<AlmacenRequestDTO> actualizarParcial(
+            @PathVariable Long id,
+            @RequestBody AlmacenNewDTO dto) {
+        AlmacenRequestDTO updated = almacenService.updatePartial(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")

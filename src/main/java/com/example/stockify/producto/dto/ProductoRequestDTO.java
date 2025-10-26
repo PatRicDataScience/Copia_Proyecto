@@ -19,8 +19,6 @@ public class ProductoRequestDTO {
     private String categoria;
     private Integer stockMinimo;
     private Integer stockActual;
-    private Boolean activo;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime fechaCreacion;
 }

@@ -1,9 +1,8 @@
 package com.example.stockify.almacen.dto;
 
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
 @Getter
 @Setter
@@ -12,7 +11,9 @@ import jakarta.validation.constraints.Positive;
 @Builder
 public class AlmacenNewDTO {
 
-    @NotBlank(message = "El nombre es obligatorio")
+    private Long id;
+
+    @NotBlank(message = "El nombre del almacén es obligatorio")
     private String nombre;
 
     @NotBlank(message = "La ubicación es obligatoria")
@@ -21,7 +22,8 @@ public class AlmacenNewDTO {
     @NotBlank(message = "El responsable es obligatorio")
     private String responsable;
 
-    @NotNull(message = "La capacidad máxima es obligatoria")
     @Positive(message = "La capacidad máxima debe ser positiva")
     private Double capacidadMaxima;
+
+    private Boolean activo;
 }
