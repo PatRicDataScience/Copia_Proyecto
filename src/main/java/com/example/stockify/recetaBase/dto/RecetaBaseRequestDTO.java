@@ -1,9 +1,6 @@
 package com.example.stockify.recetaBase.dto;
 
 import lombok.*;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,8 +14,4 @@ public class RecetaBaseRequestDTO {
     private String descripcion;
     private Integer porcionesBase;
     private String unidadPorcion;
-    private Boolean activo;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime fechaCreacion;
 }

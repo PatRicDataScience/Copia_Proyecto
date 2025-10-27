@@ -1,6 +1,7 @@
 package com.example.stockify.recetaDetalle.application;
 
 import com.example.stockify.recetaDetalle.domain.RecetaDetalleService;
+import com.example.stockify.recetaDetalle.dto.RecetaDetalleBulkDTO;
 import com.example.stockify.recetaDetalle.dto.RecetaDetalleNewDTO;
 import com.example.stockify.recetaDetalle.dto.RecetaDetalleRequestDTO;
 import jakarta.validation.Valid;
@@ -24,9 +25,16 @@ public class RecetaDetalleController {
         return ResponseEntity.ok(recetaDetalleService.create(dto));
     }
 
-    @GetMapping
-    public ResponseEntity<List<RecetaDetalleRequestDTO>> listar() {
-        return ResponseEntity.ok(recetaDetalleService.findAll());
+    @PostMapping("/bulk")
+    public ResponseEntity<List<RecetaDetalleRequestDTO>> crearVarios(@RequestBody RecetaDetalleBulkDTO dto) {
+        List<RecetaDetalleRequestDTO> detalles = recetaDetalleService.createBulk(dto.getIngredientes());
+        return ResponseEntity.ok(detalles);
+    }
+
+    @GetMapping("/receta/{recetaBaseId}")
+    public ResponseEntity<List<RecetaDetalleRequestDTO>> listarPorReceta(@PathVariable Long recetaBaseId) {
+        List<RecetaDetalleRequestDTO> detalles = recetaDetalleService.findByRecetaBaseId(recetaBaseId);
+        return ResponseEntity.ok(detalles);
     }
 
     @GetMapping("/{id}")
@@ -34,9 +42,18 @@ public class RecetaDetalleController {
         return ResponseEntity.ok(recetaDetalleService.findById(id));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<RecetaDetalleRequestDTO> actualizarParcial(@PathVariable Long id,
+                                                                     @RequestBody RecetaDetalleNewDTO dto) {
+        RecetaDetalleRequestDTO detalle = recetaDetalleService.patchUpdate(id, dto);
+        return ResponseEntity.ok(detalle);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         recetaDetalleService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }

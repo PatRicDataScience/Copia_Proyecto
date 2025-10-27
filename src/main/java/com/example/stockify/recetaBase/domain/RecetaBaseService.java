@@ -34,18 +34,9 @@ public class RecetaBaseService {
 
     public RecetaBaseRequestDTO create(RecetaBaseNewDTO dto) {
         RecetaBase receta = modelMapper.map(dto, RecetaBase.class);
-        receta.setActivo(true);
         receta.setFechaCreacion(java.time.LocalDateTime.now());
         receta = recetaBaseRepository.save(receta);
         return modelMapper.map(receta, RecetaBaseRequestDTO.class);
-    }
-
-    public RecetaBaseRequestDTO update(Long id, RecetaBaseNewDTO dto) {
-        RecetaBase existing = recetaBaseRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Receta base no encontrada con ID: " + id));
-        modelMapper.map(dto, existing);
-        existing = recetaBaseRepository.save(existing);
-        return modelMapper.map(existing, RecetaBaseRequestDTO.class);
     }
 
     public void deleteById(Long id) {
@@ -53,5 +44,26 @@ public class RecetaBaseService {
             throw new ResourceNotFoundException("No se puede eliminar. Receta base no encontrada con ID: " + id);
         }
         recetaBaseRepository.deleteById(id);
+    }
+
+    public RecetaBaseRequestDTO patchUpdate(Long id, RecetaBaseNewDTO dto) {
+        RecetaBase receta = recetaBaseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Receta base no encontrada con ID: " + id));
+
+        if (dto.getNombrePlato() != null) {
+            receta.setNombrePlato(dto.getNombrePlato());
+        }
+        if (dto.getDescripcion() != null) {
+            receta.setDescripcion(dto.getDescripcion());
+        }
+        if (dto.getPorcionesBase() != null) {
+            receta.setPorcionesBase(dto.getPorcionesBase());
+        }
+        if (dto.getUnidadPorcion() != null) {
+            receta.setUnidadPorcion(dto.getUnidadPorcion());
+        }
+
+        receta = recetaBaseRepository.save(receta);
+        return modelMapper.map(receta, RecetaBaseRequestDTO.class);
     }
 }

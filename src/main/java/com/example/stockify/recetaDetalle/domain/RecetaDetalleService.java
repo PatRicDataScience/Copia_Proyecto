@@ -66,4 +66,37 @@ public class RecetaDetalleService {
         }
         recetaDetalleRepository.deleteById(id);
     }
+
+    public List<RecetaDetalleRequestDTO> createBulk(List<RecetaDetalleNewDTO> ingredientes) {
+        return ingredientes.stream()
+                .map(this::create)
+                .collect(Collectors.toList());
+    }
+    public RecetaDetalleRequestDTO patchUpdate(Long id, RecetaDetalleNewDTO dto) {
+        RecetaDetalle detalle = recetaDetalleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Detalle no encontrado con ID: " + id));
+
+        if (dto.getCantidadNecesaria() != null) detalle.setCantidadNecesaria(dto.getCantidadNecesaria());
+        if (dto.getUnidadMedida() != null) detalle.setUnidadMedida(dto.getUnidadMedida());
+        if (dto.getProductoId() != null) {
+            Producto producto = productoRepository.findById(dto.getProductoId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + dto.getProductoId()));
+            detalle.setProducto(producto);
+        }
+        if (dto.getRecetaBaseId() != null) {
+            RecetaBase recetaBase = recetaBaseRepository.findById(dto.getRecetaBaseId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Receta base no encontrada con ID: " + dto.getRecetaBaseId()));
+            detalle.setRecetaBase(recetaBase);
+        }
+
+        detalle = recetaDetalleRepository.save(detalle);
+        return modelMapper.map(detalle, RecetaDetalleRequestDTO.class);
+    }
+
+    public List<RecetaDetalleRequestDTO> findByRecetaBaseId(Long recetaBaseId) {
+        return recetaDetalleRepository.findByRecetaBase_Id(recetaBaseId)
+                .stream()
+                .map(d -> modelMapper.map(d, RecetaDetalleRequestDTO.class))
+                .collect(Collectors.toList());
+    }
 }

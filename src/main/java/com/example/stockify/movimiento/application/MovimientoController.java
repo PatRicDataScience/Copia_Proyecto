@@ -31,7 +31,6 @@ public class MovimientoController {
         return ResponseEntity.ok(movimiento);
     }
 
-    // FASE 3-B: Registrar salida automática por receta base
     @PostMapping("/salida-receta/{recetaBaseId}")
     public ResponseEntity<List<MovimientoRequestDTO>> registrarSalidaPorReceta(
             @PathVariable Long recetaBaseId,

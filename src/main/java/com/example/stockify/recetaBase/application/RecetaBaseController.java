@@ -1,12 +1,16 @@
 package com.example.stockify.recetaBase.application;
 
+import com.example.stockify.excepciones.ErrorResponseDTO;
+import com.example.stockify.excepciones.ResourceNotFoundException;
 import com.example.stockify.recetaBase.domain.RecetaBaseService;
 import com.example.stockify.recetaBase.dto.RecetaBaseNewDTO;
 import com.example.stockify.recetaBase.dto.RecetaBaseRequestDTO;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -35,9 +39,21 @@ public class RecetaBaseController {
         return ResponseEntity.ok(recetaBaseService.findById(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RecetaBaseRequestDTO> actualizar(@PathVariable Long id, @Valid @RequestBody RecetaBaseNewDTO dto) {
-        return ResponseEntity.ok(recetaBaseService.update(id, dto));
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> actualizarParcial(@PathVariable Long id, @RequestBody RecetaBaseNewDTO dto) {
+        try {
+            RecetaBaseRequestDTO recetaActualizada = recetaBaseService.patchUpdate(id, dto);
+            return ResponseEntity.ok(recetaActualizada);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorResponseDTO(
+                            LocalDateTime.now(),
+                            HttpStatus.NOT_FOUND.value(),
+                            "Not Found",
+                            e.getMessage(),
+                            "/recetas-base/" + id
+                    ));
+        }
     }
 
     @DeleteMapping("/{id}")

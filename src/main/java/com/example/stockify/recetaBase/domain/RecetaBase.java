@@ -27,9 +27,6 @@ public class RecetaBase {
     @Column(name = "unidad_porcion", nullable = false, length = 50)
     private String unidadPorcion;
 
-    @Column(name = "activo", nullable = false)
-    private Boolean activo = true;
-
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
