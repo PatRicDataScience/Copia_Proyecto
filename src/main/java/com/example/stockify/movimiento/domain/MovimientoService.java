@@ -169,14 +169,11 @@ public class MovimientoService {
     public List<MovimientoRequestDTO> registrarSalidaPorReceta(Long recetaBaseId, int porciones) {
         List<MovimientoRequestDTO> movimientosGenerados = new ArrayList<>();
 
-        // ✅ Obtener la receta base desde la BD
         RecetaBase recetaBase = recetaBaseRepository.findById(recetaBaseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Receta base no encontrada con ID: " + recetaBaseId));
 
-        // ✅ Obtener los detalles de la receta
         List<RecetaDetalle> detalles = new ArrayList<>(recetaBase.getDetalles());
 
-        // 🔄 Recorrer cada detalle (producto + cantidad)
         for (RecetaDetalle detalle : detalles) {
             Producto producto = detalle.getProducto();
             double cantidadTotalNecesaria = detalle.getCantidadNecesaria() * porciones;

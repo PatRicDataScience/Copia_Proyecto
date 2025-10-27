@@ -1,19 +1,22 @@
 package com.example.stockify.lote.domain;
 
 import com.example.stockify.almacen.domain.Almacen;
-import com.example.stockify.movimiento.domain.Movimiento;
 import com.example.stockify.producto.domain.Producto;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 @Entity
 @Data
 @Table(name = "lotes")
 public class Lote {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,46 +24,63 @@ public class Lote {
     @Column(name = "codigo_lote", nullable = false, unique = true)
     private String codigoLote;
 
-    @Column(name = "fecha_compra")
-    private LocalDateTime fechaCompra = LocalDateTime.now();
 
-    @Column(name = "costo_unitario")
+    @NotNull
+    @Positive
+    @Column(name = "costo_unitario", nullable = false)
     private Double costoUnitario;
 
-    @Column(name = "costo_total")
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "costo_total", nullable = false)
     private Double costoTotal;
 
-    @Column(name = "cantidad_inicial")
-    private Double cantidadInicial = 0.0;
+    @NotNull
+    @Positive
+    @Column(name = "cantidad_inicial", nullable = false)
+    private Double cantidadInicial;
 
-    @Column(name = "cantidad_disponible")
-    private Double cantidadDisponible = 0.0;
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "cantidad_disponible", nullable = false)
+    private Double cantidadDisponible;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "fecha_compra", nullable = false)
+    private LocalDateTime fechaCompra = LocalDateTime.now();
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "fecha_vencimiento")
-    private ZonedDateTime fechaVencimiento;
+    private LocalDateTime fechaVencimiento;
 
-    @ManyToOne
-    @JoinColumn(name = "producto_id")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Estado estado = Estado.ACTIVO;
+
+    @JsonIgnore
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
 
-    @ManyToOne
-    @JoinColumn(name = "almacen_id")
-    private Almacen almacen; // n:1
-
-    @OneToMany(mappedBy = "lote")
-    private List<Movimiento> movimientos; // 1:n
-
-    public void reducirCantidadDisponible(Double cantidad) {
-        if (cantidadDisponible < cantidad) {
-            throw new IllegalArgumentException("No hay suficiente cantidad disponible en el lote.");
-        }
-        cantidadDisponible -= cantidad;
-    }
+    @JsonIgnore
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "almacen_id", nullable = false)
+    private Almacen almacen;
 
     @PrePersist
-    public void generarCodigoLote() {
+    public void prePersist() {
         if (codigoLote == null || codigoLote.isBlank()) {
             codigoLote = "L" + System.currentTimeMillis();
         }
+        if (fechaCompra == null) {
+            fechaCompra = LocalDateTime.now();
+        }
+    }
+
+    public void reducirCantidadDisponible(double cantidad) {
+        if (cantidadDisponible < cantidad) {
+            throw new IllegalStateException("No hay suficiente cantidad disponible en el lote.");
+        }
+        cantidadDisponible -= cantidad;
     }
 }

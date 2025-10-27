@@ -1,5 +1,6 @@
 package com.example.stockify.lote.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -7,7 +8,6 @@ import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -17,8 +17,6 @@ import java.time.ZonedDateTime;
 public class LoteRequestDTO {
     @NotBlank(message = "El código de lote es obligatorio")
     private String codigoLote;
-
-    private LocalDateTime fechaCompra;
 
     @NotNull(message = "El costo unitario no puede ser nulo")
     @Positive(message = "El costo unitario debe ser mayor que 0")
@@ -36,6 +34,9 @@ public class LoteRequestDTO {
     @PositiveOrZero(message = "La cantidad disponible no puede ser negativa")
     private Double cantidadDisponible;
 
-    private LocalDateTime fechaVencimiento;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime fechaCompra;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime fechaVencimiento;
 }

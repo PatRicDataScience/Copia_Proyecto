@@ -1,94 +1,71 @@
 package com.example.stockify.config;
 
-
 import com.example.stockify.excepciones.*;
-import jakarta.servlet.http.HttpServletRequest;
+
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.nio.file.AccessDeniedException;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    private ResponseEntity<ErrorResponseDTO> buildErrorResponse(
-            HttpStatus status, String error, String message, String path) {
-
-        ErrorResponseDTO response = new ErrorResponseDTO(
-                LocalDateTime.now(),
-                status.value(),
-                error,
-                message,
-                path
-        );
-        return new ResponseEntity<>(response, status);
-    }
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ErrorResponseDTO> handleBadRequest(
-            BadRequestException ex, HttpServletRequest request) {
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Bad Request",
-                ex.getMessage(), request.getRequestURI());
-    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleNotFound(
-            ResourceNotFoundException ex, HttpServletRequest request) {
-        return buildErrorResponse(HttpStatus.NOT_FOUND, "Not Found",
-                ex.getMessage(), request.getRequestURI());
+    public ResponseEntity<ErrorResponseDTO> handleNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Recurso no encontrado",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponseDTO> handleBadRequest(BadRequestException ex, HttpServletRequest request) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Solicitud incorrecta",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidationErrors(
-            MethodArgumentNotValidException ex, HttpServletRequest request) {
-
-        String message = ex.getBindingResult()
-                .getFieldErrors()
+    public ResponseEntity<ErrorResponseDTO> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        String message = ex.getBindingResult().getFieldErrors()
                 .stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", "));
+                .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                .findFirst()
+                .orElse(ex.getMessage());
 
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation Error",
-                message, request.getRequestURI());
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponseDTO> handleUnreadableJson(
-            HttpMessageNotReadableException ex, HttpServletRequest request) {
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Malformed JSON Request",
-                "El cuerpo de la solicitud no es válido o falta información.", request.getRequestURI());
-    }
-
-//    // 401 - Autenticación fallida
-//    @ExceptionHandler(org.springframework.security.core.AuthenticationException.class)
-//    public ResponseEntity<ErrorResponseDTO> handleUnauthorized(
-//            org.springframework.security.core.AuthenticationException ex, HttpServletRequest request) {
-//        return buildErrorResponse(HttpStatus.UNAUTHORIZED, "Unauthorized",
-//                "Autenticación requerida o token inválido.", request.getRequestURI());
-//    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponseDTO> handleAccessDenied(
-            AccessDeniedException ex, HttpServletRequest request) {
-        return buildErrorResponse(HttpStatus.FORBIDDEN, "Forbidden",
-                "No tienes permisos para acceder a este recurso.", request.getRequestURI());
-    }
-
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ErrorResponseDTO> handleConflict(
-            ConflictException ex, HttpServletRequest request) {
-        return buildErrorResponse(HttpStatus.CONFLICT, "Conflict",
-                ex.getMessage(), request.getRequestURI());
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Error de validación",
+                message,
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDTO> handleGeneric(
-            Exception ex, HttpServletRequest request) {
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error",
-                ex.getMessage(), request.getRequestURI());
+    public ResponseEntity<ErrorResponseDTO> handleGeneric(Exception ex, HttpServletRequest request) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Error interno del servidor",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
