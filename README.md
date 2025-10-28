@@ -15,6 +15,8 @@ CS 2031 **Desarrollo Basado en Plataformas**
 
 - [Medidas de Seguridad Implementadas](#6-medidas-de-seguridad-implementadas)
 
+- [GitHub & Managment](#7-gitHub-&-managment)
+
 ## 1. Introducción
 
 
