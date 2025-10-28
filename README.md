@@ -13,7 +13,7 @@ CS 2031 **Desarrollo Basado en Plataformas**
 
 - [Conclusión](#Conclusión)
 
-- [Medidas de seguridad Implementadas](#Medidas-de-seguridad-Implementadas)
+- [Medidas de seguridad Implementadas](#medidas-de-seguridad-implementadas)
 
 ## Introducción
 
@@ -45,7 +45,7 @@ Durante la ejecucción del proyecto se ha implementado el manejo de múltiples t
 intervenidas por el mismo spring boot. Sin embargo, la información del código del status http o la información, no es la más precisa para el usuario, por lo que se decidió modificar varios de estos para mejorar la
 expeciencia del usuario.
 
-## 6. Medidas de seguridad Implementadas
+## 6. Medidas de Seguridad Implementadas
 
 La aplicación recurre al uso de un filtro de autenticación y autorización para el acceso a la información. Esto es debido a que, la gran mayoría de los endpoint están bajo resguardo y solo son accesibles si el usuario
 se encuentra registrado y en ciertos casos, si tiene el permiso requerido.
