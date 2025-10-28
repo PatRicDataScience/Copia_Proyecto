@@ -13,10 +13,12 @@ CS 2031 **Desarrollo Basado en Plataformas**
 
 - [Conclusión](#Conclusión)
 
+- [Medidas de seguridad Implementadas](#Medidas)
+
 ## Introducción
 
 
-## 2. Identificación del Problema o Necesidad
+## Identificación del Problema o Necesidad
 
 
 ## 3. Descripción de la Solución
