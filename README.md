@@ -15,7 +15,7 @@ CS 2031 **Desarrollo Basado en Plataformas**
 
 - [Medidas de Seguridad Implementadas](#6-medidas-de-seguridad-implementadas)
 
-- [GitHub y Managment](#7-gitHub-y-managment)
+- [GitHub & Managment](#7-gitHub-managment)
 
 ## 1. Introducción
 
@@ -52,7 +52,7 @@ expeciencia del usuario.
 La aplicación recurre al uso de un filtro de autenticación y autorización para el acceso a la información. Esto es debido a que, la gran mayoría de los endpoint están bajo resguardo y solo son accesibles si el usuario
 se encuentra registrado y en ciertos casos, si tiene el permiso requerido.
 
-## 7. GitHub y Managment
+## 7. GitHub & Managment
 
 Git Hub ha sido una herramienta de suma utilidad. Esta nos permitió controlar el cómo iba progresando el proyecto, ya que, cada integrante del equipo podía estar al tanto de como se prograsaraba con el desarrollo del
 aplicativo. Sin embargo, se pudo mejorar el flujo de este con el uso de issues o tasks, que la misma herramienta provee, para poder tener un mejor mapeo de que realizaría cada integrante ya que la forma de organización
