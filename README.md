@@ -11,7 +11,7 @@ CS 2031 **Desarrollo Basado en Plataformas**
 
 ## Índice
 
-- [Conclusión](#Conclusión)
+[1. Introducción](#1-Introducción)
 
 - [Medidas de Seguridad Implementadas](#6-medidas-de-seguridad-implementadas)
 
