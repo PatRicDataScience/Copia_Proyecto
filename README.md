@@ -15,7 +15,7 @@ CS 2031 **Desarrollo Basado en Plataformas**
 
 - [Medidas de Seguridad Implementadas](#6-medidas-de-seguridad-implementadas)
 
-## Introducción
+## 1. Introducción
 
 
 ## Identificación del Problema o Necesidad
