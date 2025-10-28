@@ -13,7 +13,7 @@ CS 2031 **Desarrollo Basado en Plataformas**
 
 - [Conclusión](#Conclusión)
 
-- [Medidas de seguridad Implementadas](#medidas-de-seguridad-implementadas)
+- [Medidas de Seguridad Implementadas](#medidas-de-seguridad-implementadas)
 
 ## Introducción
 
