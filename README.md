@@ -11,7 +11,7 @@ CS 2031 **Desarrollo Basado en Plataformas**
 
 ## Índice
 
--[Conclusión](#Conclusión)
+- [Conclusión](#Conclusión)
 
 ## Introducción
 
@@ -54,7 +54,7 @@ Git Hub ha sido una herramienta de suma utilidad. Esta nos permitió controlar e
 aplicativo. Sin embargo, se pudo mejorar el flujo de este con el uso de issues o tasks, que la misma herramienta provee, para poder tener un mejor mapeo de que realizaría cada integrante ya que la forma de organización
 fue más a la antigua si se podría decir.
 
-## 8. Conclusión
+## Conclusión
 
 
 
